@@ -1,0 +1,308 @@
+# 🚀 Guide de déploiement Peleforo avec WAMP
+
+## Étape 1 : Installation de WAMP
+
+### Télécharger WAMP
+
+1. Allez sur **https://www.wampserver.com/en/**
+2. Téléchargez la version 64 bits (ou 32 bits selon votre Windows)
+3. Exécutez l'installateur `wampserver3.x.x_x64.exe`
+
+### Installation
+
+1. **Acceptez** la licence
+2. **Choisissez** le dossier d'installation (par défaut : `C:\wamp64\`)
+3. **Sélectionnez** votre navigateur par défaut
+4. **Sélectionnez** votre éditeur de texte (Notepad++ recommandé)
+5. Cliquez sur **Install**
+6. **Attendez** la fin de l'installation
+
+### Démarrer WAMP
+
+1. **Lancez** WampServer depuis le menu Démarrer
+2. Une **icône verte** apparaît dans la barre des tâches (si rouge/orange, voir dépannage)
+3. Le serveur est prêt ! 🎉
+
+---
+
+## Étape 2 : Déployer Peleforo
+
+### Méthode 1 : Copier les fichiers manuellement
+
+1. **Ouvrez** l'explorateur Windows
+2. **Naviguez** vers `C:\wamp64\www\`
+3. **Créez** un nouveau dossier `peleforo`
+4. **Copiez tous les fichiers** de Peleforo dans ce dossier :
+   ```
+   C:\wamp64\www\peleforo\
+   ├── index.php
+   ├── dashboard.php
+   ├── vouchers.php
+   ├── customize.php
+   ├── print.php
+   ├── settings.php
+   ├── history.php
+   ├── routeros_api.php
+   └── README.md
+   ```
+
+### Méthode 2 : Glisser-déposer
+
+1. **Clic droit** sur l'icône WAMP (barre des tâches)
+2. Cliquez sur **"www directory"**
+3. **Glissez** le dossier `peleforo` dans la fenêtre qui s'ouvre
+
+---
+
+## Étape 3 : Vérifier PHP et Apache
+
+### Vérifier que tout fonctionne
+
+1. **Clic droit** sur l'icône WAMP
+2. Cliquez sur **"Localhost"**
+3. Vous devriez voir la page d'accueil WAMP
+4. Cliquez sur **"Vos Projets"** ou **"Your Projects"**
+5. Vous devriez voir **peleforo** dans la liste
+
+### Activer l'extension PHP sockets
+
+1. **Clic droit** sur l'icône WAMP
+2. **PHP** → **Extensions PHP**
+3. **Cochez** `php_sockets` (s'il n'est pas coché)
+4. **Redémarrez** les services (Clic droit → Restart All Services)
+
+---
+
+## Étape 4 : Accéder à Peleforo
+
+### Ouvrir l'application
+
+1. **Ouvrez votre navigateur** (Chrome, Firefox, Edge)
+2. **Tapez dans la barre d'adresse** :
+   ```
+   http://localhost/peleforo/
+   ```
+3. La page de configuration devrait s'afficher ! 🎉
+
+### Configuration initiale
+
+Remplissez le formulaire avec vos informations Mikrotik :
+
+- **IP Mikrotik** : `192.168.88.1` (ou votre IP Mikrotik)
+- **Port API** : `8728`
+- **Nom d'utilisateur** : `admin`
+- **Mot de passe** : votre mot de passe admin Mikrotik
+- **Nom Hotspot** : `hotspot1` (ou le nom de votre serveur hotspot)
+
+Cliquez sur **"Connecter et continuer"**
+
+---
+
+## Étape 5 : Permissions des fichiers
+
+### Donner les droits d'écriture (Windows)
+
+1. **Clic droit** sur le dossier `C:\wamp64\www\peleforo\`
+2. **Propriétés** → **Sécurité**
+3. **Modifier** → Sélectionnez **"Utilisateurs"**
+4. **Cochez** "Contrôle total" ou au minimum "Écriture"
+5. **Appliquer** → **OK**
+
+Cela permet à Peleforo de créer les fichiers de configuration.
+
+---
+
+## 🔧 Configuration avancée
+
+### Créer un Virtual Host (optionnel)
+
+Pour accéder via `http://peleforo.local` au lieu de `http://localhost/peleforo/`
+
+#### 1. Éditer le fichier hosts
+
+1. Ouvrez le **Bloc-notes en tant qu'administrateur**
+2. **Fichier** → **Ouvrir** : `C:\Windows\System32\drivers\etc\hosts`
+3. Ajoutez à la fin :
+   ```
+   127.0.0.1    peleforo.local
+   ```
+4. **Sauvegardez**
+
+#### 2. Créer le Virtual Host dans WAMP
+
+1. **Clic droit** sur l'icône WAMP
+2. **Apache** → **httpd-vhosts.conf**
+3. Ajoutez à la fin du fichier :
+   ```apache
+   <VirtualHost *:80>
+       ServerName peleforo.local
+       DocumentRoot "C:/wamp64/www/peleforo"
+       <Directory "C:/wamp64/www/peleforo">
+           Options Indexes FollowSymLinks
+           AllowOverride All
+           Require all granted
+       </Directory>
+   </VirtualHost>
+   ```
+4. **Sauvegardez**
+5. **Redémarrez** les services WAMP
+
+Maintenant accédez via : `http://peleforo.local`
+
+---
+
+## ❓ Dépannage WAMP
+
+### L'icône WAMP est orange ou rouge
+
+**Causes possibles :**
+
+#### Port 80 occupé (le plus fréquent)
+
+**Skype ou autre application utilise le port 80**
+
+1. **Clic droit** sur l'icône WAMP
+2. **Outils** → **Test Port 80**
+3. Si occupé, changez le port Apache :
+   - **Apache** → **httpd.conf**
+   - Cherchez `Listen 80`
+   - Remplacez par `Listen 8080`
+   - Sauvegardez et redémarrez
+   - Accédez via : `http://localhost:8080/peleforo/`
+
+**IIS (Internet Information Services) actif**
+
+1. **Panneau de configuration** → **Programmes**
+2. **Activer ou désactiver des fonctionnalités Windows**
+3. **Décochez** "Internet Information Services"
+4. **Redémarrez** Windows
+
+#### Port 3306 occupé (MySQL)
+
+1. **Services Windows** (Win + R → `services.msc`)
+2. Trouvez **MySQL** (si installé séparément)
+3. **Arrêtez** le service
+4. **Redémarrez** WAMP
+
+### Extension sockets non disponible
+
+1. **Clic droit** sur l'icône WAMP
+2. **PHP** → **Version** → Vérifiez que vous utilisez **PHP 7.4+**
+3. Si besoin, changez la version PHP
+4. **PHP** → **Extensions PHP** → Cochez `php_sockets`
+
+### Erreur "Forbidden" ou "403"
+
+1. **Vérifiez** que les fichiers sont bien dans `C:\wamp64\www\peleforo\`
+2. **Permissions** : suivez l'Étape 5 ci-dessus
+3. **Redémarrez** WAMP
+
+### Page blanche
+
+1. **Activez l'affichage des erreurs** :
+   - Créez un fichier `test.php` dans peleforo :
+   ```php
+   <?php
+   error_reporting(E_ALL);
+   ini_set('display_errors', 1);
+   phpinfo();
+   ?>
+   ```
+2. Accédez à `http://localhost/peleforo/test.php`
+3. Vérifiez les erreurs affichées
+
+---
+
+## 📱 Accès depuis un autre appareil (même réseau)
+
+### Configuration
+
+1. **Trouvez votre IP locale** :
+   - Ouvrez **CMD** (Win + R → `cmd`)
+   - Tapez `ipconfig`
+   - Notez l'**Adresse IPv4** (ex: `192.168.1.50`)
+
+2. **Configurez le pare-feu** :
+   - **Panneau de configuration** → **Pare-feu Windows**
+   - **Paramètres avancés** → **Règles de trafic entrant**
+   - **Nouvelle règle** → **Port** → **TCP 80**
+   - **Autoriser la connexion**
+
+3. **Depuis un autre PC/téléphone** (même WiFi) :
+   ```
+   http://192.168.1.50/peleforo/
+   ```
+
+---
+
+## 🎯 Checklist de déploiement
+
+- [ ] WAMP installé et icône **verte**
+- [ ] Dossier peleforo dans `C:\wamp64\www\`
+- [ ] Extension `php_sockets` activée
+- [ ] Permissions d'écriture sur le dossier
+- [ ] Accès à `http://localhost/peleforo/` fonctionne
+- [ ] API Mikrotik activée (port 8728)
+- [ ] Configuration initiale complétée
+- [ ] Test de génération de vouchers OK
+
+---
+
+## 🔐 Sécurité (recommandé)
+
+### Protéger l'accès avec un mot de passe
+
+1. Créez un fichier `.htaccess` dans `C:\wamp64\www\peleforo\` :
+   ```apache
+   AuthType Basic
+   AuthName "Peleforo Admin"
+   AuthUserFile C:/wamp64/www/peleforo/.htpasswd
+   Require valid-user
+   ```
+
+2. Générez le fichier `.htpasswd` :
+   - Utilisez : https://hostingcanada.org/htpasswd-generator/
+   - Copiez le contenu dans `C:\wamp64\www\peleforo\.htpasswd`
+
+3. Redémarrez WAMP
+
+---
+
+## 📞 Besoin d'aide ?
+
+### Commandes utiles
+
+**Redémarrer tous les services :**
+- Clic droit WAMP → **Restart All Services**
+
+**Voir les logs d'erreur :**
+- Clic droit WAMP → **Apache** → **Apache error log**
+- Clic droit WAMP → **PHP** → **PHP error log**
+
+**Tester PHP :**
+```
+http://localhost/?phpinfo=1
+```
+
+### Problèmes courants résolus
+
+| Problème | Solution |
+|----------|----------|
+| Icône orange | Port 80 occupé → changez le port |
+| Fichiers non accessibles | Vérifiez les permissions |
+| API ne se connecte pas | Vérifiez l'IP et que l'API Mikrotik est active |
+| Page blanche | Activez display_errors pour voir l'erreur |
+
+---
+
+## ✅ Prêt à utiliser !
+
+Votre Peleforo Hotspot Manager est maintenant déployé avec WAMP ! 🎉
+
+**Prochaines étapes :**
+1. Générez vos premiers vouchers
+2. Personnalisez votre portail captif
+3. Uploadez la page splash sur Mikrotik
+4. Imprimez vos tickets
+
+**Bon démarrage ! 🚀**

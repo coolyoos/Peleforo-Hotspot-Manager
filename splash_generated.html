@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIFI GABBANA </title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+        }
+        .header h1 { font-size: 32px; margin-bottom: 10px; }
+        .header p { opacity: 0.9; font-size: 16px; }
+        .content { padding: 30px; }
+        .tariff-card {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .tariff-info h3 { color: #333; font-size: 18px; margin-bottom: 5px; }
+        .tariff-info p { color: #666; font-size: 14px; }
+        .tariff-price {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .login-form { margin-top: 30px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-size: 14px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 WIFI GABBANA </h1>
+            <p>BIENVENUE A L'ESPACE COMMANDANT COUSTO</p>
+        </div>
+        <div class="content">
+            <h2 style="color: #333; margin-bottom: 20px;">📋 Nos Tarifs</h2>            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>1 Heure</h3>
+                    <p>Débit: 1 Mbps</p>
+                </div>
+                <div class="tariff-price">500 FCFA</div>
+            </div>            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>3 Heures</h3>
+                    <p>Débit: 2 Mbps</p>
+                </div>
+                <div class="tariff-price">1000 FCFA</div>
+            </div>            <div class="tariff-card">
+                <div class="tariff-info">
+                    <h3>1 Jour</h3>
+                    <p>Débit: 5 Mbps</p>
+                </div>
+                <div class="tariff-price">2000 FCFA</div>
+            </div>            <form class="login-form" method="post" action="$(link-login-only)">
+                <input type="hidden" name="dst" value="$(link-orig)"/>
+                <input type="hidden" name="popup" value="true"/>
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Code utilisateur" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Mot de passe" required>
+                </div>
+                <button type="submit" class="btn">Se connecter</button>
+            </form>
+        </div>
+        <div class="footer">
+            Merci de votre confiance 
+        </div>
+    </div>
+</body>
+</html>

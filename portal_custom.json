@@ -1,0 +1,23 @@
+{
+    "theme": "blue",
+    "logo_text": "WIFI GABBANA ",
+    "welcome_message": "BIENVENUE A L'ESPACE COMMANDANT COUSTO",
+    "footer_text": "Merci de votre confiance ",
+    "tariffs": [
+        {
+            "name": "1 Heure",
+            "price": "500 FCFA",
+            "speed": "1 Mbps"
+        },
+        {
+            "name": "3 Heures",
+            "price": "1000 FCFA",
+            "speed": "2 Mbps"
+        },
+        {
+            "name": "1 Jour",
+            "price": "2000 FCFA",
+            "speed": "5 Mbps"
+        }
+    ]
+}
